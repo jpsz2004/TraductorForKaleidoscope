@@ -1,0 +1,44 @@
+start: program;
+
+program: 
+    lista+ |
+    operacion |
+    condicion
+    ;
+
+
+operacion:
+  '\(' operacion '\)'
+  | '\-' operacion
+  | suma
+  | decimal
+  | trigonometricas
+  | numero 
+  | variable;
+
+suma:  operacion ('\+'| '\-' | '\*' | '/') operacion '/;';
+decimal: numero '.' numero;
+numero: '[0]|([1-9][0-9]*)';
+trigonometricas: ('SEN'| 'COS' | 'TAN') ('\('operacion '\)'| (numero|decimal) );
+WS: '[ ]+' (%ignore);
+logica: operacion ('<' | '>' | '<=' | '>=' | '==' | '!=' | disyuncion | conjuncion | negacion) operacion;
+
+variable:'(\_)*' '( [a-z] | [A-Z] | [0-9] | '\_')+'; 
+
+conjuncion: '/\\' | '\*' | '&&';
+disyuncion: '\\/' | '\+' | '\|\|' ;
+negacion: '¬' | '~';
+
+lista: 'QUOTE \(elementos\)' ;
+
+elementos: elemento (',' elemento)*;
+
+elemento: STRING | NUMBER | NIL | lista;
+
+NUMBER: decimal | numero;
+STRING: '"([^"\\]|\\.)*"';
+NIL: 'nil';
+QUOTE : '\''
+
+
+condicion: 'if\(logica\)/{program /; /}' '(else/{ program /; /})?';
