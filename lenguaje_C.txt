@@ -1,11 +1,14 @@
 start: program;
 
+funcion: 'def' variable '\(contenido\)' '/{program/}';
+
 program: 
     lista+ |
     operacion |
     condicion
     ;
 
+contenido: variable | (variable ',' contenido);
 
 operacion:
   '\(' operacion '\)'
