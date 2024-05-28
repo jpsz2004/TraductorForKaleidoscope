@@ -2,13 +2,17 @@ start: program;
 
 funcion: 'def' variable '\(contenido\)' '/{program/}';
 
+llamar: variable'\(cont\)';
+
 program: 
     lista+ |
     operacion |
     condicion
     ;
 
-contenido: variable | (variable ',' contenido);
+contenido: variable | (contenido ',' contenido);
+
+cont: numero | variable | (contenido ',' contenido);
 
 operacion:
   '\(' operacion '\)'
@@ -19,12 +23,15 @@ operacion:
   | numero 
   | variable;
 
-suma:  operacion ('\+'| '\-' | '\*' | '/') operacion '/;';
+suma:  operacion ('\+'| '\-' | '\*' | '/') operacion;
 decimal: numero '.' numero;
 numero: '[0]|([1-9][0-9]*)';
 trigonometricas: ('SEN'| 'COS' | 'TAN') ('\('operacion '\)'| (numero|decimal) );
 WS: '[ ]+' (%ignore);
-logica: operacion ('<' | '>' | '<=' | '>=' | '==' | '!=' | disyuncion | conjuncion | negacion) operacion;
+logica: operacion ('<' | '>' | '<=' | '>=' | '==' | '!=' ) operacion;
+
+contenido_condicion: '\(logica\)' ( disyuncion | conjuncion | negacion) '\(logica\)' | '\(logica\)' ( disyuncion | conjuncion | negacion) contenido_condicion;
+
 
 variable:'(\_)*' '( [a-z] | [A-Z] | [0-9] | '\_')+'; 
 
@@ -44,4 +51,4 @@ NIL: 'nil';
 QUOTE : '\''
 
 
-condicion: 'if\(logica\)/{program /; /}' '(else/{ program /; /})?';
+condicion: 'if\(contenido_condicion\)/{program /; /}' '(else/{ program /; /})?';
