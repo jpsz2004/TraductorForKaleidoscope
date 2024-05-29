@@ -4,15 +4,17 @@ app: contenido_app;
 
 contenido_app: funcion llamar | funcion contenido_app;
 
-funcion: 'def' variable '\(contenido\)' '/{program/}';
+funcion: 'def' variable '\(contenido\)' '/{contenido_funcion/}';
 
 llamar: variable'\(cont\)';
 
 program: 
-    lista+ |
+    lista |
     operacion |
     condicion
     ;
+
+contenido_funcion: program | program contenido_funcion;
 
 contenido: variable | (contenido ',' contenido);
 
