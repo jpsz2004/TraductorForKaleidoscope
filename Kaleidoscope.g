@@ -1,4 +1,8 @@
-start: program;
+start: app;
+
+app: contenido_app;
+
+contenido_app: funcion llamar | funcion contenido_app;
 
 funcion: 'def' variable '\(contenido\)' '/{program/}';
 
