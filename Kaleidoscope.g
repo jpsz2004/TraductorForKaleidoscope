@@ -59,7 +59,7 @@ elementos: elemento (',' elemento)*;
 
 elemento: NUMBER | NIL | lista;
 
-NUMBER: decimal | numero;
+NUMBER: numero;
 
 
 
