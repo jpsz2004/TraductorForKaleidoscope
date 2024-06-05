@@ -35,7 +35,7 @@ operacion:
 
 suma:  operacion ('\+'| '\-' | '\*' | '/') operacion;
 
-decimal: numero '.' numero;
+decimal: numero '\.' numero;
 
 numero: '[0]|([1-9][0-9]*)';
 
