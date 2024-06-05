@@ -4,9 +4,13 @@ app: contenido_app;
 
 contenido_app: funcion llamar | funcion contenido_app;
 
-funcion: 'def' variable '\(contenido\)' '/{contenido_funcion/}';
+funcion: 'def' variable '\(' parametros '\)' '{' contenido_funcion '}';
 
-llamar: variable'\(cont\)';
+llamada: variable '\(' argumentos '\)';
+
+parametros: variable (',' variable)* | /* vacío */ ;
+
+argumentos: expresion (',' expresion)* | /* vacío */ ;
 
 program: 
     lista |
@@ -30,31 +34,39 @@ operacion:
   | variable;
 
 suma:  operacion ('\+'| '\-' | '\*' | '/') operacion;
+
 decimal: numero '.' numero;
+
 numero: '[0]|([1-9][0-9]*)';
+
 trigonometricas: ('SEN'| 'COS' | 'TAN') ('\('operacion '\)'| (numero|decimal) );
-WS: '[ ]+' (%ignore);
-logica: operacion ('<' | '>' | '<=' | '>=' | '==' | '!=' ) operacion;
+
+logica: operacion ('<' | '>' | '<=' | '>=' | '==' | '!=') operacion;
 
 contenido_condicion: '\(logica\)' ( disyuncion | conjuncion | negacion) '\(logica\)' | '\(logica\)' ( disyuncion | conjuncion | negacion) contenido_condicion;
 
+variable: '[a-zA-Z_][a-zA-Z0-9_]*';
 
-variable:'(\_)*' '( [a-z] | [A-Z] | [0-9] | '\_')+'; 
+conjuncion: '&&';
 
-conjuncion: '/\\' | '\*' | '&&';
-disyuncion: '\\/' | '\+' | '\|\|' ;
+disyuncion: '\|\|' ;
+
 negacion: '¬' | '~';
 
 lista: 'QUOTE \(elementos\)' ;
 
 elementos: elemento (',' elemento)*;
 
-elemento: STRING | NUMBER | NIL | lista;
+elemento: NUMBER | NIL | lista;
 
 NUMBER: decimal | numero;
-STRING: '"([^"\\]|\\.)*"';
+
+
+
 NIL: 'nil';
-QUOTE : '\''
 
+QUOTE: '\'';
 
-condicion: 'if\(contenido_condicion\)/{program /; /}' '(else/{ program /; /})?';
+condicion: 'if\(contenido_condicion\)/{program /; /}' '(else/{ program /; /})?';
+
+WS: '[ \t\n]+' (%ignore);
