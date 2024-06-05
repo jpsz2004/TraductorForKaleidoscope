@@ -2,16 +2,11 @@ start: app;
 
 app: contenido_app;
 
-contenido_app: funcion llamar | funcion contenido_app;
+contenido_app: funcion llamada | funcion contenido_app;
 
-funcion: 'def' variable '\(' parametros '\)' '{' contenido_funcion '}';
+funcion: 'def' variable '\(' contenido '\)' '{' contenido_funcion '}';
 
-llamada: variable '\(' argumentos '\)';
-
-parametros: variable (',' variable)* | /* vacío */ ;
-
-argumentos: expresion (',' expresion)* | /* vacío */ ;
-
+llamada: variable '\(' cont '\)';
 program: 
     lista |
     operacion |
@@ -57,9 +52,7 @@ lista: 'QUOTE \(elementos\)' ;
 
 elementos: elemento (',' elemento)*;
 
-elemento: NUMBER | NIL | lista;
-
-NUMBER: numero;
+elemento: (numero | decimal) | NIL | lista;
 
 
 
