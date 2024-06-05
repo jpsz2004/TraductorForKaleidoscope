@@ -4,55 +4,55 @@ app: contenido_app;
 
 contenido_app: funcion llamada | funcion contenido_app;
 
-funcion: 'def' variable '\(' contenido '\)' '{' contenido_funcion '}';
+funcion: 'def' VARIABLE '\(' contenido '\)' '{' contenido_funcion '}';
 
-llamada: variable '\(' cont '\)';
+llamada: VARIABLE '\(' cont '\)';
 program: 
-    lista |
+    LISTA |
     operacion |
     condicion
     ;
 
 contenido_funcion: program | program contenido_funcion;
 
-contenido: variable | (contenido ',' contenido);
+contenido: VARIABLE | (contenido ',' contenido);
 
-cont: numero | variable | (contenido ',' contenido);
+cont: NUMERO | VARIABLE | (contenido ',' contenido);
 
 operacion:
   '\(' operacion '\)'
   | '\-' operacion
   | suma
-  | decimal
+  | DECIMAL
   | trigonometricas
-  | numero 
-  | variable;
+  | NUMERO 
+  | VARIABLE;
 
 suma:  operacion ('\+'| '\-' | '\*' | '/') operacion;
 
-decimal: numero '\.' numero;
+DECIMAL: NUMERO '\.' NUMERO;
 
-numero: '[0]|([1-9][0-9]*)';
+NUMERO: '[0]|([1-9][0-9]*)';
 
-trigonometricas: ('SEN'| 'COS' | 'TAN') ('\('operacion '\)'| (numero|decimal) );
+trigonometricas: ('SEN'| 'COS' | 'TAN') ('\('operacion '\)'| (NUMERO|DECIMAL) );
 
 logica: operacion ('<' | '>' | '<=' | '>=' | '==' | '!=') operacion;
 
-contenido_condicion: '\(logica\)' ( disyuncion | conjuncion | negacion) '\(logica\)' | '\(logica\)' ( disyuncion | conjuncion | negacion) contenido_condicion;
+contenido_condicion: '\(logica\)' ( DISYUNCION | CONJUNCION | negacion) '\(logica\)' | '\(logica\)' ( DISYUNCION | CONJUNCION | negacion) contenido_condicion;
 
-variable: '[a-zA-Z_][a-zA-Z0-9_]*';
+VARIABLE: '[a-zA-Z_][a-zA-Z0-9_]*';
 
-conjuncion: '&&';
+CONJUNCION: '&&';
 
-disyuncion: '\|\|' ;
+DISYUNCION: '\|\|' ;
 
 negacion: '¬' | '~';
 
-lista: 'QUOTE \(elementos\)' ;
+LISTA: 'QUOTE \(elementos\)' ;
 
 elementos: elemento (',' elemento)*;
 
-elemento: (numero | decimal) | NIL | lista;
+elemento: (NUMERO | DECIMAL) | NIL | LISTA;
 
 
 

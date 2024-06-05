@@ -11,14 +11,14 @@ class KaleidoscopeVisitor(SVisitor):
 
     def visit_funcion(self, node):
         function_name = node.tail[0].value
-        params = ", ".join([param.value for param in node.tail[1].tail])
+        params = ", ".join([param.value for param in node.tail[1].tail]) if node.tail[1].tail else "void"
         self.cpp_code += f"auto {function_name}({params}) {{\n"
         self.visit(node.tail[2])  # Visit function body
         self.cpp_code += "}\n"
 
     def visit_llamada(self, node):
         function_name = node.tail[0].value
-        args = ", ".join([self.visit(arg) for arg in node.tail[1].tail])
+        args = ", ".join([self.visit(arg) for arg in node.tail[1].tail]) if node.tail[1].tail else ""
         return f"{function_name}({args});"
 
     def visit_operacion(self, node):
